@@ -27,7 +27,7 @@ all_input_trip = []
 print "Deleting everything from db"
 Station.objects.all().delete()
 Trip.objects.all().delete()
-
+all_input_train = []
 def load_station_data(in_data):
 
 
@@ -51,7 +51,7 @@ def load_trip_data(in_data):
     trip = Trip()
 
     all_input_trip.append(input_trip)
-    '''
+
     start_station_object = Station.objects.get(name=in_data[i_start_station])
     arriv_station_object = Station.objects.get(name=in_data[i_arrival_station])
     trip.start_station = start_station_object
@@ -84,6 +84,26 @@ def load_trip_data(in_data):
         trip.arrival_station = arriv_station_object
         trip.arrival_time = in_data[i_arrival_time]
         trip.save()
+     '''
+
+def load_train_data(in_data):
+    train = Train()
+    train.name = in_data[i_name]
+    train.number = in_data[i_no]
+    train.offday = in_data[i_offday]
+    print in_data
+    train.trip = Trip.objects.get(start_station=Station.objects.get(name=in_data[i_start_station])
+                                  , arrival_station=Station.objects.get(name=in_data[i_arrival_station]))
+
+    train.save()
+
+
+
+
+
+
+
+
 
 
 for line in fp.readlines():
@@ -113,4 +133,17 @@ for line in fp.readlines():
 
 fp.close()
 
+fp = open(filename, 'r')
+counter = 1
+data=[]
+for line in fp.readlines():
+    data.append(line.strip())
+    if counter % 8 == 0:
+        data = data[1:]
+        all_data.append(data)
+        #load_train_data(data)
+        data = []
+    counter += 1
+
+fp.close()
 print input_station
