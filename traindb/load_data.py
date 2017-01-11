@@ -2,10 +2,10 @@ import os
 from django.core.wsgi import get_wsgi_application
 os.environ['DJANGO_SETTINGS_MODULE'] = 'bdtrainz_project.settings'
 application = get_wsgi_application()
+
 from traindb.models import Train, Trip, Station
 from django.conf import settings
 filename = os.path.join(settings.BASE_DIR+'\\traindb', 'input_all_train.txt')
-
 
 
 fp = open(filename, 'r')
@@ -27,14 +27,13 @@ all_input_trip = []
 print "Deleting everything from db"
 Station.objects.all().delete()
 Trip.objects.all().delete()
-all_input_train = []
+Train.objects.all().delete()
+
+
 def load_station_data(in_data):
 
-
-    print in_data
     if in_data[i_start_station] not in input_station:
         station = Station()
-        print in_data[i_start_station]
         input_station.append(in_data[i_start_station])
         station.name = in_data[i_start_station]
         station.save()
@@ -44,6 +43,7 @@ def load_station_data(in_data):
         input_station.append(in_data[i_arrival_station])
         station.name = in_data[i_arrival_station]
         station.save()
+
 
 
 def load_trip_data(in_data):
@@ -84,27 +84,23 @@ def load_trip_data(in_data):
         trip.arrival_station = arriv_station_object
         trip.arrival_time = in_data[i_arrival_time]
         trip.save()
-     '''
+
+    '''
+
 
 def load_train_data(in_data):
+
     train = Train()
+
     train.name = in_data[i_name]
     train.number = in_data[i_no]
     train.offday = in_data[i_offday]
-    print in_data
-    train.trip = Trip.objects.get(start_station=Station.objects.get(name=in_data[i_start_station])
-                                  , arrival_station=Station.objects.get(name=in_data[i_arrival_station]))
 
+    train.trip = Trip.objects.get(start_station=Station.objects.get(name=in_data[i_start_station]),
+                                  arrival_station=Station.objects.get(name=in_data[i_arrival_station]),
+                                  start_time=in_data[i_start_time], arrival_time=in_data[i_arrival_time]
+                                  )
     train.save()
-
-
-
-
-
-
-
-
-
 
 for line in fp.readlines():
 
@@ -114,12 +110,16 @@ for line in fp.readlines():
         data = data[1:]
         all_data.append(data)
         load_station_data(data)
+
         data = []
 
     counter += 1
+print "Station Data Saved..."
+fp.close()
+
+
 counter = 1
 data = []
-fp.close()
 fp = open(filename, 'r')
 for line in fp.readlines():
     data.append(line.strip())
@@ -127,23 +127,27 @@ for line in fp.readlines():
         data = data[1:]
         all_data.append(data)
         load_trip_data(data)
+
         data = []
 
     counter += 1
-
+print "Trip Data Saved..."
 fp.close()
 
-fp = open(filename, 'r')
+
 counter = 1
-data=[]
+data = []
+fp = open(filename, 'r')
 for line in fp.readlines():
     data.append(line.strip())
     if counter % 8 == 0:
         data = data[1:]
         all_data.append(data)
-        #load_train_data(data)
+        load_train_data(data)
         data = []
+
     counter += 1
 
 fp.close()
-print input_station
+print 'Train Data saved'
+

@@ -5,17 +5,15 @@ from django.db import models
 # Create your models here.
 
 
+# status_choices = (('FRI', 'Friday'), ('SAT', 'Saturday'), ('SUN','Sunday'))
+
+
 class Station(models.Model):
     name = models.CharField(max_length=70)
 
     def __str__(self):
         return self.name
-    '''
-    @classmethod
-    def create(cls, name):
-        station = cls(name=name)
-        return station
-    '''
+
 
 class Trip(models.Model):
     start_time = models.TimeField()
@@ -26,12 +24,17 @@ class Trip(models.Model):
     def __str__(self):
         return str(self.start_station)+' to '+str(self.arrival_station)
 
+    def __unicode__(self):
+        return str(self.start_station) + ' to ' + str(self.arrival_station)
+
+
 class Train(models.Model):
     name = models.CharField(max_length=70)
     number = models.IntegerField()
     offday = models.CharField(max_length=10)
     trip = models.ForeignKey(Trip)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
+
 
