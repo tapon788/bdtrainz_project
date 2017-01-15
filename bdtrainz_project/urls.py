@@ -19,5 +19,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('traindb.urls')),
+    url(r'^bdtrainz/', include('traindb.urls')),
 ]
