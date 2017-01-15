@@ -18,6 +18,7 @@ from traindb.views import TrainDetail
 
 from traindb.views import hello
 
+
 urlpatterns = [
-    url(r'trip/$', TrainDetail.as_view(), name='stpd'),
+    url(r'^(?P<pk>[0-9]{1,3})/$', TripDetail.as_view(), name='stpd'),
 ]
