@@ -1,8 +1,10 @@
 {% block content %}
     <h2>Publishers</h2>
     <ul>
+
         {% for trip in tripping_list %}
-            <li>{{ trip.start_station }}</li>
+
+            <li>Arrival: {{ trip.name }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
