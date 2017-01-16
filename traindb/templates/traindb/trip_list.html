@@ -1,10 +1,16 @@
 {% block content %}
     <h2>Publishers</h2>
-    <ul>
+<ul>
+{{ station_list }}
+{% for train in station_list %}
+    <li>{{ train.name }}</li>
+    <li>{{train.number}}</li>
+    <li>{{train.offday}}</li>
+       <li> <b>{{ train.trip.start_station.name }}</b></li>
+        <li>{{ train.trip.start_time }}</li>
+        <li>{{ train.trip.arrival_time }}</li>
+    <li><b>{{ train.trip.arrival_station.name }}</li></b>
 
-        {% for trip in tripping_list %}
-
-            <li>Arrival: {{ trip.name }}</li>
-        {% endfor %}
-    </ul>
+{% endfor %}
+</ul>
 {% endblock %}
