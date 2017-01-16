@@ -14,11 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from traindb.views import TrainDetail
+from traindb.views import hello,TrainStations
 
 from traindb.views import hello
 
 
 urlpatterns = [
+<<<<<<< HEAD
     url(r'^(?P<pk>[0-9]{1,3})/$', TripDetail.as_view(), name='stpd'),
 ]
+=======
+    url(r'prip(?P<slug>[0-9]{1,3})/$', hello, {'foo': 'bar'}, name='train_detail',),
+    url(r'trip/([\w-]+)/$', TrainStations.as_view(), name='trip_detail'),
+]
+>>>>>>> origin/master
